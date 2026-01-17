@@ -36,6 +36,10 @@ func Run() error {
 			switch ev.Rune {
 			case 'q', 'Q':
 				return nil
+			case 'n', 'N':
+				if g.Solved {
+					g.NextPuzzle()
+				}
 			case 'w', 'W':
 				g.MoveCursor(0, -1)
 			case 's', 'S':

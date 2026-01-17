@@ -18,9 +18,13 @@ func (r *Renderer) Render(w io.Writer, g *Game) {
 	b.WriteString("\x1b[?25l")
 
 	b.WriteString("SUDOKU\n")
-	b.WriteString("Controls: arrows/WASD move  1-9 set  0/Backspace clear  Q quit\n\n")
+	b.WriteString("Controls: arrows/WASD move  1-9 set  0/Backspace clear  Q quit\n")
+	if g.Solved {
+		b.WriteString("Solved! Press N for a new puzzle.\n")
+	}
+	b.WriteString("\n")
 
-	b.WriteString("+-------+-------+-------+\n")
+	b.WriteString("+---------+---------+---------+\n")
 	for y := 0; y < 9; y++ {
 		b.WriteString("|")
 		for x := 0; x < 9; x++ {
@@ -47,7 +51,7 @@ func (r *Renderer) Render(w io.Writer, g *Game) {
 		}
 		b.WriteString("\n")
 		if (y+1)%3 == 0 {
-			b.WriteString("+-------+-------+-------+\n")
+			b.WriteString("+---------+---------+---------+\n")
 		}
 	}
 

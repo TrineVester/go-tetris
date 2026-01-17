@@ -2,7 +2,6 @@ package input
 
 import (
 	"bufio"
-	"os"
 
 	"golang.org/x/term"
 )
@@ -27,19 +26,26 @@ type KeyEvent struct {
 }
 
 func StartKeyInput() (<-chan KeyEvent, func(), error) {
-	fd := int(os.Stdin.Fd())
+	inputFile, err := openInputDevice()
+	if err != nil {
+		return nil, func() {}, err
+	}
+
+	fd := int(inputFile.Fd())
 	oldState, err := term.MakeRaw(fd)
 	if err != nil {
+		_ = inputFile.Close()
 		return nil, func() {}, err
 	}
 
 	restore := func() {
 		_ = term.Restore(fd, oldState)
+		_ = inputFile.Close()
 	}
 
 	ch := make(chan KeyEvent, 32)
 	go func() {
-		reader := bufio.NewReader(os.Stdin)
+		reader := bufio.NewReader(inputFile)
 		for {
 			b, err := reader.ReadByte()
 			if err != nil {
