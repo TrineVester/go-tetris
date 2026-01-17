@@ -10,6 +10,7 @@ import (
 )
 
 func main() {
+	termui.EnableANSI()
 	g := game.New()
 
 	input, restore, err := termui.StartInput()

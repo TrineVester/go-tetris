@@ -9,9 +9,12 @@ A simple Tetris clone you can play directly in a terminal window.
 
 ## Run
 
-```bash
+In a terminal:
+
+1) Open Windows Terminal or PowerShell (outside VS Code) in the project folder.
+2) Run:
+
 go run .
-```
 
 ## Controls
 
@@ -23,4 +26,4 @@ go run .
 
 ## Notes
 
-If you see no colors or the screen does not update, try running in Windows Terminal.
+If the screen prints multiple frames instead of updating in-place, use Windows Terminal and ensure ANSI support is enabled. The app enables ANSI automatically on Windows.

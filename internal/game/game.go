@@ -152,6 +152,51 @@ func (g *Game) Occupied(x, y int) bool {
 	return g.pieceCell(g.Current, x, y)
 }
 
+func (g *Game) CellValue(x, y int) int {
+	if x < 0 || x >= BoardWidth || y < 0 || y >= BoardHeight {
+		return 0
+	}
+	if g.Board[y][x] != 0 {
+		return g.Board[y][x]
+	}
+	if g.pieceCell(g.Current, x, y) {
+		return g.Current.Shape + 1
+	}
+	return 0
+}
+
+func (g *Game) GhostPiece() Piece {
+	if g.Over {
+		return g.Current
+	}
+	p := g.Current
+	for {
+		next := p
+		next.Y++
+		if g.collides(next) {
+			return p
+		}
+		p = next
+	}
+}
+
+func (g *Game) GhostCell(x, y int) bool {
+	if x < 0 || x >= BoardWidth || y < 0 || y >= BoardHeight {
+		return false
+	}
+	if g.Board[y][x] != 0 {
+		return false
+	}
+	if g.pieceCell(g.Current, x, y) {
+		return false
+	}
+	ghost := g.GhostPiece()
+	if ghost.Y == g.Current.Y {
+		return false
+	}
+	return g.pieceCell(ghost, x, y)
+}
+
 func (g *Game) lockPiece() {
 	p := g.Current
 	for r := 0; r < 4; r++ {

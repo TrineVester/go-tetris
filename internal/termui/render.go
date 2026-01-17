@@ -8,7 +8,7 @@ import (
 	"go-tetris/internal/game"
 )
 
-type Renderer struct {}
+type Renderer struct{}
 
 func NewRenderer() *Renderer {
 	return &Renderer{}
@@ -31,8 +31,16 @@ func (r *Renderer) Render(w io.Writer, g *game.Game) {
 	for y := 0; y < game.BoardHeight; y++ {
 		b.WriteString("|")
 		for x := 0; x < game.BoardWidth; x++ {
-			if g.Occupied(x, y) {
+			val := g.CellValue(x, y)
+			if val != 0 {
+				b.WriteString(colorFor(val))
 				b.WriteString("[]")
+				b.WriteString("\x1b[0m")
+			} else if g.GhostCell(x, y) {
+				b.WriteString("\x1b[2m")
+				b.WriteString(colorFor(g.Current.Shape + 1))
+				b.WriteString("[]")
+				b.WriteString("\x1b[0m")
 			} else {
 				b.WriteString("  ")
 			}
@@ -57,4 +65,25 @@ func (r *Renderer) Render(w io.Writer, g *game.Game) {
 
 func ShowCursor(w io.Writer) {
 	fmt.Fprint(w, "\x1b[?25h")
+}
+
+func colorFor(v int) string {
+	switch v {
+	case 1: // I
+		return "\x1b[36m"
+	case 2: // O
+		return "\x1b[33m"
+	case 3: // T
+		return "\x1b[35m"
+	case 4: // S
+		return "\x1b[32m"
+	case 5: // Z
+		return "\x1b[31m"
+	case 6: // J
+		return "\x1b[34m"
+	case 7: // L
+		return "\x1b[93m"
+	default:
+		return "\x1b[37m"
+	}
 }

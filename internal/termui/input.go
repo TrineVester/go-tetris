@@ -54,6 +54,18 @@ func StartInput() (<-chan Action, func(), error) {
 						ch <- ActionLeft
 					}
 				}
+			case 0, 224: // Windows arrow keys in legacy mode
+				b2, _ := reader.ReadByte()
+				switch b2 {
+				case 72:
+					ch <- ActionRotate
+				case 80:
+					ch <- ActionDown
+				case 77:
+					ch <- ActionRight
+				case 75:
+					ch <- ActionLeft
+				}
 			case 'a', 'A':
 				ch <- ActionLeft
 			case 'd', 'D':
