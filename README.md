@@ -1,6 +1,6 @@
-# Go Tetris (Terminal)
+# Go Game Hub (Terminal)
 
-A simple Tetris clone you can play directly in a terminal window.
+A small terminal game hub with Tetris and Sudoku.
 
 ## Requirements
 
@@ -16,12 +16,27 @@ In a terminal:
 
 go run .
 
-## Controls
+## Game Hub
+
+Pick a game:
+
+- 1) Tetris
+- 2) Sudoku
+- Q to quit
+
+## Tetris Controls
 
 - Left/Right: move
 - Down: soft drop
 - Up: rotate
 - Space: hard drop
+- Q: quit
+
+## Sudoku Controls
+
+- Arrows/WASD: move cursor
+- 1-9: set value
+- 0 or Backspace: clear
 - Q: quit
 
 ## Notes

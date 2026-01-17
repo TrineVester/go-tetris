@@ -1,4 +1,8 @@
-package termui
+//go:build ignore
+// +build ignore
+
+// Deprecated: replaced by shared input package.
+package tetris
 
 import (
 	"bufio"

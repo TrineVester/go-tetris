@@ -1,11 +1,9 @@
-package termui
+package tetris
 
 import (
 	"fmt"
 	"io"
 	"strings"
-
-	"go-tetris/internal/game"
 )
 
 type Renderer struct{}
@@ -14,7 +12,7 @@ func NewRenderer() *Renderer {
 	return &Renderer{}
 }
 
-func (r *Renderer) Render(w io.Writer, g *game.Game) {
+func (r *Renderer) Render(w io.Writer, g *Game) {
 	var b strings.Builder
 	b.WriteString("\x1b[H\x1b[2J")
 	b.WriteString("\x1b[?25l")
@@ -23,14 +21,14 @@ func (r *Renderer) Render(w io.Writer, g *game.Game) {
 	b.WriteString(fmt.Sprintf("Score: %d  Lines: %d  Level: %d\n\n", g.Score, g.Lines, g.Level))
 
 	b.WriteString("+")
-	for i := 0; i < game.BoardWidth*2; i++ {
+	for i := 0; i < BoardWidth*2; i++ {
 		b.WriteString("-")
 	}
 	b.WriteString("+\n")
 
-	for y := 0; y < game.BoardHeight; y++ {
+	for y := 0; y < BoardHeight; y++ {
 		b.WriteString("|")
-		for x := 0; x < game.BoardWidth; x++ {
+		for x := 0; x < BoardWidth; x++ {
 			val := g.CellValue(x, y)
 			if val != 0 {
 				b.WriteString(colorFor(val))
@@ -49,7 +47,7 @@ func (r *Renderer) Render(w io.Writer, g *game.Game) {
 	}
 
 	b.WriteString("+")
-	for i := 0; i < game.BoardWidth*2; i++ {
+	for i := 0; i < BoardWidth*2; i++ {
 		b.WriteString("-")
 	}
 	b.WriteString("+\n")
@@ -61,10 +59,6 @@ func (r *Renderer) Render(w io.Writer, g *game.Game) {
 	}
 
 	fmt.Fprint(w, b.String())
-}
-
-func ShowCursor(w io.Writer) {
-	fmt.Fprint(w, "\x1b[?25h")
 }
 
 func colorFor(v int) string {
